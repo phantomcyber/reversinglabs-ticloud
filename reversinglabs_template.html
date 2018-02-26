@@ -1,14 +1,13 @@
 {% extends 'widgets/widget_template.html' %}
 {% load custom_template %}
 {% block body_color %}white{% endblock %}
-{% block body_text_color %}black{% endblock %}
 {% block custom_title_prop %}{% if title_logo %}style="background-size: auto 60%; background-position: 50%; background-repeat: no-repeat; background-image: url('/app_resource/{{ title_logo }}');"{% endif %}{% endblock %}
 {% block widget_content %}
 
 <!-- 
 File: ./reversinglabs/reversinglabs_template.html
 
-Copyright (c) ReversingLabs Inc 2016-2017
+Copyright (c) ReversingLabs Inc 2016-2018
 
 This unpublished material is proprietary to ReversingLabs Inc.
 All rights reserved.
@@ -138,6 +137,12 @@ of ReversingLabs Inc.
     border-bottom: 20px solid transparent;
     border-left: 20px solid #ebebeb;
 }
+
+.dark-theme .rl-result-full,
+.dark-theme .rl-result-full .label-base {
+   background-color: #444357;
+}
+
 .side-cells {
     float: left;
     width: 100px;

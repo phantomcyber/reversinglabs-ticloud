@@ -1,7 +1,7 @@
 # --
 # File: reversinglabs_consts.py
 #
-# Copyright (c) ReversingLabs Inc 2016-2017
+# Copyright (c) ReversingLabs Inc 2016-2018
 #
 # This unpublished material is proprietary to ReversingLabs Inc.
 # All rights reserved.
@@ -16,7 +16,7 @@
 REVERSINGLABS_MSG_GOT_RESP = "Got Response from ReversingLabs"
 REVERSINGLABS_SUCC_MSG_OBJECT_QUERIED = "ReversingLabs query for {object_name} '{object_value}' finished"
 REVERSINGLABS_ERR_MSG_OBJECT_QUERIED = "ReversingLabs query for {object_name} '{object_value}' failed"
-REVERSINGLABS_MSG_CONNECTING_WITH_URL = "Querying ReversingLabs using url: '{url}' for hash type: '{hash_type}'"
+REVERSINGLABS_MSG_CONNECTING_WITH_URL = "Querying ReversingLabs to check connectivity"
 REVERSINGLABS_SUCC_CONNECTIVITY_TEST = "Connectivity test passed"
 REVERSINGLABS_ERR_CONNECTIVITY_TEST = "Connectivity test failed"
 REVERSINGLABS_MSG_CHECK_CREDENTIALS = "Please check your credentials or the network connectivity"
@@ -35,3 +35,6 @@ REVERSINGLABS_JSON_STATUS = "status"
 # Other constants used in the connector
 MAL_PRESENCE_API_URL = 'https://api.reversinglabs.com/api/databrowser/malware_presence/bulk_query/json?extended=true'
 XREF_API_URL = 'https://api.reversinglabs.com/api/xref/v2/bulk_query/json'
+
+MAL_PRESENCE_API_URL = 'https://ticloud-aws1-api.reversinglabs.com/api/databrowser/malware_presence/bulk_query/json?extended=true'
+XREF_API_URL = 'https://ticloud-aws1-api.reversinglabs.com/api/xref/v2/bulk_query/json'

@@ -1,6 +1,6 @@
 # --
 #
-# Copyright (c) ReversingLabs Inc 2016-2017
+# Copyright (c) ReversingLabs Inc 2016-2018
 #
 # This unpublished material is proprietary to ReversingLabs Inc.
 # All rights reserved.
@@ -24,10 +24,6 @@ import hashlib
 import requests
 from requests.auth import HTTPBasicAuth
 from collections import defaultdict
-
-# flake8: noqa
-
-requests.packages.urllib3.disable_warnings()
 
 
 class ReversinglabsConnector(BaseConnector):
@@ -64,18 +60,14 @@ class ReversinglabsConnector(BaseConnector):
 
         self.save_progress(REVERSINGLABS_GENERATED_RANDOM_HASH)
 
-        tree = lambda: defaultdict(tree) # noqa: E731, E261
+        tree = lambda: defaultdict(tree)  # noqa: E731, E261
         hash_type = 'md5'
         query = tree()
         query['rl']['query']['hash_type'] = hash_type
         query['rl']['query']['hashes'] = [md5_hash]
 
-        self.save_progress(REVERSINGLABS_MSG_CONNECTING_WITH_URL, url=MAL_PRESENCE_API_URL, hash_type=hash_type)
-
-        config = self.get_config()
-
         try:
-            r = requests.post(MAL_PRESENCE_API_URL, verify=config[phantom.APP_JSON_VERIFY], auth=self._auth, data=json.dumps(query), headers=self._headers)
+            r = requests.post(MAL_PRESENCE_API_URL, auth=self._auth, data=json.dumps(query), headers=self._headers)
         except Exception as e:
             self.set_status(phantom.APP_ERROR, 'Request to server failed', e)
             self.save_progress(REVERSINGLABS_SUCC_CONNECTIVITY_TEST)
@@ -134,8 +126,6 @@ class ReversinglabsConnector(BaseConnector):
 
     def _query_file(self, param):
 
-        config = self.get_config()
-
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # get the hash
@@ -147,17 +137,17 @@ class ReversinglabsConnector(BaseConnector):
         if (not hash_type):
             return action_result.set_status(phantom.APP_ERROR, "Unable to detect Hash Type")
 
-        tree = lambda: defaultdict(tree) # noqa: E731, E261
+        tree = lambda: defaultdict(tree)  # noqa: E731, E261
 
         query = tree()
         query['rl']['query']['hash_type'] = hash_type
         query['rl']['query']['hashes'] = [hash_to_query]
 
         # First the malware presence
-        self.save_progress(REVERSINGLABS_MSG_CONNECTING_WITH_URL, url=MAL_PRESENCE_API_URL, hash_type=hash_type)
+        self.save_progress(REVERSINGLABS_MSG_CONNECTING_WITH_URL)
 
         try:
-            r = requests.post(MAL_PRESENCE_API_URL, verify=config[phantom.APP_JSON_VERIFY], auth=self._auth, data=json.dumps(query), headers=self._headers)
+            r = requests.post(MAL_PRESENCE_API_URL, auth=self._auth, data=json.dumps(query), headers=self._headers)
         except Exception as e:
             return action_result.set_status(phantom.APP_ERROR, "Request to server failed", e)
 
@@ -181,7 +171,7 @@ class ReversinglabsConnector(BaseConnector):
         entry = entries[0]
 
         # Add a data dictionary into the result to store information
-        hash_data = action_result.add_data({'mwp_result':entry})
+        hash_data = action_result.add_data({'mwp_result': entry})
 
         # Add the status into it
         hash_data[REVERSINGLABS_JSON_STATUS] = entry.get('status', 'Unknown')
@@ -193,10 +183,10 @@ class ReversinglabsConnector(BaseConnector):
             # No need to do anything more for this hash
             return action_result.set_status(phantom.APP_SUCCESS)
 
-        self.save_progress(REVERSINGLABS_MSG_CONNECTING_WITH_URL, url=XREF_API_URL, hash_type=hash_type)
+        self.save_progress(REVERSINGLABS_MSG_CONNECTING_WITH_URL)
 
         try:
-            r = requests.post(XREF_API_URL, verify=config[phantom.APP_JSON_VERIFY], auth=self._auth, data=json.dumps(query), headers=self._headers)
+            r = requests.post(XREF_API_URL, auth=self._auth, data=json.dumps(query), headers=self._headers)
         except Exception as e:
             return action_result.set_status(phantom.APP_ERROR, "XREF API Request to server failed", e)
 
@@ -210,7 +200,7 @@ class ReversinglabsConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, "XREF Response does not seem to be a valid JSON", e)
 
         action_result.add_debug_data(rl_result)
-        action_result.add_debug_data({'mwp_result':entry})
+        action_result.add_debug_data({'mwp_result': entry})
         samples = rl_result.get('rl', {}).get('samples')
         samples.append(entry)
         if (not samples):
@@ -259,11 +249,12 @@ class ReversinglabsConnector(BaseConnector):
 
                 self.update_summary({REVERSINGLABS_JSON_TOTAL_POSITIVES: total_positives})
 
+
 if __name__ == '__main__':
 
     import sys
-    #import pudb
-    #pudb.set_trace()
+    # import pudb
+    # pudb.set_trace()
 
     if (len(sys.argv) < 2):
         print "No test json specified as input"

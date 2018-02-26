@@ -1,20 +1,21 @@
 {
     "appid": "b2ea15f8-9daa-45f8-a5e3-324b612e85ef",
     "name": "TitaniumCloud",
-    "package_name": "phantom_reversinglabs",
-    "description": "This app implements the investigative action 'file reputation' on the ReversingLabs reputation service",
+    "package_name": "phantom_titaniumcloud",
+    "description": "This app implements investigative actions on the ReversingLabs reputation service",
     "type": "reputation",
     "main_module": "reversinglabs_connector.pyc",
-    "app_version": "1.2.28",
-    "utctime_updated": "2017-11-30T22:46:00.000000Z",
+    "app_version": "1.2.34",
+    "utctime_updated": "2018-01-12T20:06:46.000000Z",
     "product_vendor": "ReversingLabs",
     "product_name": "TitaniumCloud",
     "product_version_regex": ".*",
-    "min_phantom_version": "1.2.236",
-    "publisher": "Phantom Cyber",
+    "min_phantom_version": "3.0.251",
+    "publisher": "ReversingLabs",
     "consolidate_widgets": false,
-    "logo": "rl.png",
-    "license": "Copyright (c) ReversingLabs Inc 2016-2017",
+    "logo": "logo_reversinglabs.svg",
+    "logo_dark": "logo_reversinglabs_dark.svg",
+    "license": "Copyright (c) ReversingLabs Inc 2016-2018",
     "configuration": {
         "username": {
             "description": "Username",
@@ -27,13 +28,6 @@
             "data_type": "password",
             "order": 1,
             "required": true
-        },
-        "verify_server_cert": {
-            "data_type": "boolean",
-            "description": "Verify server certificate",
-            "required": true,
-            "order": 1,
-            "default": false
         }
     },
     "actions": [
@@ -52,7 +46,7 @@
         },
         {
             "action": "file reputation",
-            "description": "Queries ReversingLabs for file info",
+            "description": "Queries ReversingLabs for file reputation info",
             "type": "investigate",
             "identifier": "lookup_file",
             "read_only": true,
@@ -64,39 +58,29 @@
                     "description": "File hash to query",
                     "data_type": "string",
                     "order": 0,
-                    "contains": [
-                        "hash",
-                        "sha256",
-                        "sha1",
-                        "md5"
-                    ],
-                    "primary": true,
                     "required": true
                 }
             },
             "output": [
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.parameter.hash",
                     "data_type": "string",
                     "contains": [
+                        "hash",
+                        "sha256",
+                        "sha1",
                         "md5"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.status",
+                    "data_path": "action_result.data.*.first_scanned_on",
                     "data_type": "string",
                     "example_values": [
-                        "KNOWN",
-                        "UNKNOWN",
-                        "MALICIOUS",
-                        "SUSPICIOUS"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.sha1",
-                    "data_type": "string",
-                    "contains": [
-                        "sha1"
+                        "2014-11-11T15:19:52"
                     ]
                 },
                 {
@@ -121,21 +105,17 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.single_scan",
-                    "data_type": "boolean"
-                },
-                {
-                    "data_path": "action_result.data.*.first_scanned_on",
+                    "data_path": "action_result.data.*.md5",
                     "data_type": "string",
-                    "example_values": [
-                        "2014-11-11T15:19:52"
+                    "contains": [
+                        "md5"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.sample_type",
+                    "data_path": "action_result.data.*.ripemd160",
                     "data_type": "string",
                     "example_values": [
-                        "PE32 executable (GUI) Intel 80386, for MS Windows"
+                        "503a7ea0c0f216b9ec3e7605a66a3a1b98099ec0"
                     ]
                 },
                 {
@@ -146,17 +126,52 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.xref.*.scanner_match",
-                    "data_type": "numeric",
+                    "data_path": "action_result.data.*.sample_type",
+                    "data_type": "string",
                     "example_values": [
-                        "36"
+                        "PE32 executable (GUI) Intel 80386, for MS Windows"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.xref.*.scanner_count",
-                    "data_type": "numeric",
+                    "data_path": "action_result.data.*.sha1",
+                    "data_type": "string",
+                    "contains": [
+                        "sha1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sha256",
+                    "data_type": "string",
+                    "contains": [
+                        "sha256"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sha384",
+                    "data_type": "string",
+                    "contains": [
+                        "sha384"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sha512",
+                    "data_type": "string",
+                    "contains": [
+                        "sha512"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.single_scan",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
                     "example_values": [
-                        "40"
+                        "KNOWN",
+                        "UNKNOWN",
+                        "MALICIOUS",
+                        "SUSPICIOUS"
                     ]
                 },
                 {
@@ -181,6 +196,27 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.xref.*.scanner_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        "40"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.xref.*.scanner_match",
+                    "data_type": "numeric",
+                    "example_values": [
+                        "36"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.xref.*.scanners.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "avast"
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.xref.*.scanners.*.timestamp",
                     "data_type": "string",
                     "example_values": [
@@ -192,48 +228,6 @@
                     "data_type": "string",
                     "example_values": [
                         "avast_stream.zip"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.xref.*.scanners.*.name",
-                    "data_type": "string",
-                    "example_values": [
-                        "avast"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.sha384",
-                    "data_type": "string",
-                    "contains": [
-                        "sha384"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.sha256",
-                    "data_type": "string",
-                    "contains": [
-                        "sha256"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.sha512",
-                    "data_type": "string",
-                    "contains": [
-                        "sha512"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.ripemd160",
-                    "data_type": "string",
-                    "example_values": [
-                        "503a7ea0c0f216b9ec3e7605a66a3a1b98099ec0"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.md5",
-                    "data_type": "string",
-                    "contains": [
-                        "md5"
                     ]
                 },
                 {
@@ -251,8 +245,8 @@
                     ]
                 },
                 {
-                    "data_path": "summary.total_positives",
-                    "data_type": "numeric"
+                    "data_path": "action_result.message",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -260,6 +254,10 @@
                 },
                 {
                     "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_positives",
                     "data_type": "numeric"
                 }
             ],
