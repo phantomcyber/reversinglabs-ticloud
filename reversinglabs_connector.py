@@ -41,7 +41,7 @@ class ReversinglabsConnector(BaseConnector):
         self._auth = None
         self._mwp_url = 'https://ticloud-aws1-api.reversinglabs.com/api/databrowser/malware_presence/bulk_query/json?extended=true'
         self._xref_url = 'https://ticloud-aws1-api.reversinglabs.com/api/xref/v2/bulk_query/json'
-
+        self._verify_cert = True
 
     def initialize(self):
 
@@ -53,6 +53,9 @@ class ReversinglabsConnector(BaseConnector):
         if "url" in config:
             self._mwp_url = "{0}{1}".format(config["url"], '/api/databrowser/malware_presence/bulk_query/json?extended=true')
             self._xref_url = "{0}{1}".format(config["url"], '/api/xref/v2/bulk_query/json')
+
+        if "verify_server_cert" in config:
+            self._verify_cert = config["verify_server_cert"]
 
         self.debug_print('self.status', self.get_status())
 
@@ -74,7 +77,7 @@ class ReversinglabsConnector(BaseConnector):
         query['rl']['query']['hashes'] = [md5_hash]
 
         try:
-            r = requests.post(self._mwp_url, auth=self._auth, data=json.dumps(query), headers=self._headers)
+            r = requests.post(self._mwp_url, auth=self._auth, data=json.dumps(query), headers=self._headers, verify=self._verify_cert)
         except Exception as e:
             self.set_status(phantom.APP_ERROR, 'Request to server failed', e)
             self.save_progress(REVERSINGLABS_SUCC_CONNECTIVITY_TEST)
@@ -155,7 +158,7 @@ class ReversinglabsConnector(BaseConnector):
         self.save_progress(REVERSINGLABS_MSG_CONNECTING_WITH_URL)
 
         try:
-            r = requests.post(self._mwp_url, auth=self._auth, data=json.dumps(query), headers=self._headers)
+            r = requests.post(self._mwp_url, auth=self._auth, data=json.dumps(query), headers=self._headers, verify=self._verify_cert)
         except Exception as e:
             return action_result.set_status(phantom.APP_ERROR, "Request to server failed", e)
 
@@ -194,7 +197,7 @@ class ReversinglabsConnector(BaseConnector):
         self.save_progress(REVERSINGLABS_MSG_CONNECTING_WITH_URL)
 
         try:
-            r = requests.post(self._xref_url, auth=self._auth, data=json.dumps(query), headers=self._headers)
+            r = requests.post(self._xref_url, auth=self._auth, data=json.dumps(query), headers=self._headers, verify=self._verify_cert)
         except Exception as e:
             return action_result.set_status(phantom.APP_ERROR, "XREF API Request to server failed", e)
 

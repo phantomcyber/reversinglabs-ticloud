@@ -5,7 +5,7 @@
     "description": "This app implements investigative actions on the ReversingLabs reputation service",
     "type": "reputation",
     "main_module": "reversinglabs_connector.pyc",
-    "app_version": "1.3.00",
+    "app_version": "1.3.1",
     "utctime_updated": "2018-01-12T20:06:46.000000Z",
     "product_vendor": "ReversingLabs",
     "product_name": "TitaniumCloud",
@@ -34,6 +34,13 @@
             "order": 2,
             "data_type": "string",
             "required": false 
+        },
+        "verify_server_cert": {
+            "data_type": "boolean",
+            "description": "Verify server certificate",
+            "required": true,
+            "order": 1,
+            "default": true
         }
     },
     "actions": [
