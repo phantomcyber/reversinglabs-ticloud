@@ -1,8 +1,8 @@
 {
     "appid": "b2ea15f8-9daa-45f8-a5e3-324b612e85ef",
-    "name": "RL TitaniumCloud",
+    "name": "RL TitaniumCloud File Reputation",
     "package_name": "phantom_titaniumcloud",
-    "description": "This app implements investigative actions on the ReversingLabs reputation service",
+    "description": "This app integrates with ReversingLabs File Reputation cloud service to implement reputation and investigative actions for file samples",
     "type": "reputation",
     "main_module": "reversinglabs_connector.pyc",
     "app_version": "1.3.1",
