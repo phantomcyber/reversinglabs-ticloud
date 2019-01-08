@@ -10,7 +10,7 @@
     "product_vendor": "ReversingLabs",
     "product_name": "TitaniumCloud",
     "product_version_regex": ".*",
-    "min_phantom_version": "3.0.251",
+    "min_phantom_version": "3.5.180",
     "publisher": "ReversingLabs",
     "consolidate_widgets": false,
     "logo": "logo_reversinglabs.svg",
@@ -71,7 +71,13 @@
                     "description": "File hash to query",
                     "data_type": "string",
                     "order": 0,
-                    "required": true
+                    "required": true,
+                    "contains": [
+                        "hash",
+                        "sha256",
+                        "sha1",
+                        "md5"
+                    ]
                 }
             },
             "output": [
