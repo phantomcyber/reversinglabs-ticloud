@@ -82,7 +82,9 @@ def file_reputation(provides, all_results, context):
                     res['classification'] = 'Unknown'
                 if 'mwp_result' in res and result_summary.get(REVERSINGLABS_JSON_TOTAL_SCANS, 0) == 0:
                     print "no XREF "
-                    results.append((parameter.get(APP_JSON_HASH, '').lower(), res['mwp_result']['scanner_match'], res['mwp_result']['scanner_count'], res))
+                    results.append((parameter.get(APP_JSON_HASH, '').lower(),
+                        res.get('mwp_result', {}).get('scanner_match', 0),
+                        res.get('mwp_result', {}).get('scanner_count', 0), res))
                 else:
                     results.append((parameter.get(APP_JSON_HASH, '').lower(), result_summary.get(REVERSINGLABS_JSON_POSITIVES, 0),
                                     result_summary.get(REVERSINGLABS_JSON_TOTAL_SCANS, 0), res))
